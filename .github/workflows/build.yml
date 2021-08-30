@@ -12,7 +12,10 @@ jobs:
   build-and-tests:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [
+          ubuntu-latest, ubuntu-18.04, ubuntu-20.04
+          windows-latest, windows-2022, windows-2019, windows-2016,
+          macOS-latest, macos-10.15, macos-11]
         dc: [dmd-master] # dmd-latest, ldc-latest, ldc-master
         arch: [x86_64] # x86
         build_type: [debug, release, release-debug, release-inline]
