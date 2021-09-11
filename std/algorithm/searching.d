@@ -150,7 +150,7 @@ are true.
 
 @safe unittest
 {
-    int x = 1;
+    immutable int x = 1;
     assert(all!(a => a > x)([2, 3]));
     assert(all!"a == 0x00c9"("\xc3\x89")); // Test that `all` auto-decodes.
 }

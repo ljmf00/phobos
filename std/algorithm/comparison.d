@@ -554,9 +554,9 @@ do
 
 @safe unittest
 {
-    int a = 1;
-    short b = 6;
-    double c = 2;
+    immutable int a = 1;
+    immutable short b = 6;
+    immutable double c = 2;
     static assert(is(typeof(clamp(c,a,b)) == double));
     assert(clamp(c,   a, b) == c);
     assert(clamp(a-c, a, b) == a);

@@ -151,8 +151,8 @@ buffer. For example:
 */
 @safe unittest
 {
-    auto arr = [4, 5, 6, 7, 1, 2, 3];
-    auto p = bringToFront(arr[0 .. 4], arr[4 .. $]);
+    immutable arr = [4, 5, 6, 7, 1, 2, 3];
+    immutable p = bringToFront(arr[0 .. 4], arr[4 .. $]);
     assert(p == arr.length - 4);
     assert(arr == [ 1, 2, 3, 4, 5, 6, 7 ]);
 }

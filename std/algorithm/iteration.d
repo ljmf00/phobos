@@ -105,7 +105,7 @@ if (fun.length >= 1)
     {
         import std.algorithm.comparison : equal, max, min;
 
-        auto data = [[4, 2, 1, 3], [4, 9, -1, 3, 2], [3]];
+        immutable data = [[4, 2, 1, 3], [4, 9, -1, 3, 2], [3]];
 
         // Single aggregating function
         auto agg1 = data.aggregate!max;

@@ -505,7 +505,7 @@ if (ss != SwapStrategy.stable && isInputRange!Range && hasSwappableElements!Rang
                 }
                 else
                 {
-                    auto t1 = r.moveFront(), t2 = r.moveBack();
+                    immutable t1 = r.moveFront(), t2 = r.moveBack();
                     r.front = t2;
                     r.back = t1;
                 }
@@ -1369,7 +1369,7 @@ if (Rs.length >= 2 &&
     import std.range : dropOne;
     int[] a = [1, 2];
     int[] b = [0, 3];
-    auto arr = a.merge(b);
+    immutable arr = a.merge(b);
     assert(arr.front == 0);
     assert(arr.save.dropOne.front == 1);
     assert(arr.front == 0);
@@ -1536,8 +1536,8 @@ template multiSort(less...) //if (less.length > 1)
 {
     import std.algorithm.mutation : SwapStrategy;
     static struct Point { int x, y; }
-    auto pts1 = [ Point(0, 0), Point(5, 5), Point(0, 1), Point(0, 2) ];
-    auto pts2 = [ Point(0, 0), Point(0, 1), Point(0, 2), Point(5, 5) ];
+    immutable pts1 = [ Point(0, 0), Point(5, 5), Point(0, 1), Point(0, 2) ];
+    immutable pts2 = [ Point(0, 0), Point(0, 1), Point(0, 2), Point(5, 5) ];
     multiSort!("a.x < b.x", "a.y < b.y", SwapStrategy.unstable)(pts1);
     assert(pts1 == pts2);
 }
@@ -3191,7 +3191,7 @@ if (isRandomAccessRange!R && hasLength!R && hasSwappableElements!R)
     import std.algorithm.iteration : map;
     import std.numeric : entropy;
 
-    auto lowEnt = [ 1.0, 0, 0 ],
+    immutable lowEnt = [ 1.0, 0, 0 ],
          midEnt = [ 0.1, 0.1, 0.8 ],
         highEnt = [ 0.31, 0.29, 0.4 ];
     auto arr = new double[][3];
@@ -3212,7 +3212,7 @@ if (isRandomAccessRange!R && hasLength!R && hasSwappableElements!R)
     import std.algorithm.iteration : map;
     import std.numeric : entropy;
 
-    auto lowEnt = [ 1.0, 0, 0 ],
+    immutable lowEnt = [ 1.0, 0, 0 ],
         midEnt = [ 0.1, 0.1, 0.8 ],
         highEnt = [ 0.31, 0.29, 0.4 ];
     auto arr = new double[][3];
@@ -3266,7 +3266,7 @@ if (isRandomAccessRange!R && hasLength!R && hasSwappableElements!R)
     import std.algorithm.iteration : map;
     import std.numeric : entropy;
 
-    auto lowEnt = [ 1.0, 0, 0 ],
+    immutable lowEnt = [ 1.0, 0, 0 ],
         midEnt = [ 0.1, 0.1, 0.8 ],
         highEnt = [ 0.31, 0.29, 0.4 ];
     auto arr = new double[][3];
@@ -3863,12 +3863,12 @@ done:
         topN(a, k);
         if (k > 0)
         {
-            auto left = reduce!max(a[0 .. k]);
+            immutable left = reduce!max(a[0 .. k]);
             assert(left <= a[k]);
         }
         if (k + 1 < a.length)
         {
-            auto right = reduce!min(a[k + 1 .. $]);
+            immutable right = reduce!min(a[k + 1 .. $]);
             assert(right >= a[k]);
         }
     }
@@ -4904,7 +4904,7 @@ if (isRandomAccessRange!Range && hasLength!Range)
 
     // ulong.max has 21 digits in the factorial number system
     ubyte[21] fac;
-    size_t idx = decimalToFactorial(perm, fac);
+    immutable size_t idx = decimalToFactorial(perm, fac);
 
     if (idx > range.length)
     {
@@ -4932,25 +4932,25 @@ if (isRandomAccessRange!Range && hasLength!Range)
 pure @safe unittest
 {
     auto src = [0, 1, 2, 3, 4, 5, 6];
-    auto rslt = [4, 0, 6, 2, 1, 3, 5];
+    immutable rslt = [4, 0, 6, 2, 1, 3, 5];
 
-    bool worked = nthPermutationImpl(src, 2982);
+    immutable bool worked = nthPermutationImpl(src, 2982);
     assert(worked);
     assert(src == rslt);
 }
 
 pure @safe unittest
 {
-    auto rslt = [4, 0, 6, 2, 1, 3, 5];
+    immutable rslt = [4, 0, 6, 2, 1, 3, 5];
 
-    auto src = nthPermutation([0, 1, 2, 3, 4, 5, 6], 2982);
+    immutable src = nthPermutation([0, 1, 2, 3, 4, 5, 6], 2982);
     assert(src == rslt);
 }
 
 pure @safe unittest
 {
     auto src = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    auto rslt = [4, 0, 6, 2, 1, 3, 5, 7, 8, 9, 10];
+    immutable rslt = [4, 0, 6, 2, 1, 3, 5, 7, 8, 9, 10];
 
     src = nthPermutation(src, 2982);
     assert(src == rslt);

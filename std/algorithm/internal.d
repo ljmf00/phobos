@@ -26,7 +26,7 @@ version (StdUnittest)
         static rnd = Xorshift(234_567_891);
         string[] result =
             new string[uniform(minArraySize, maxArraySize, rnd)];
-        string alpha = "abcdefghijABCDEFGHIJ";
+        immutable alpha = "abcdefghijABCDEFGHIJ";
         foreach (ref s; result)
         {
             foreach (i; 0 .. uniform(0u, 20u, rnd))
