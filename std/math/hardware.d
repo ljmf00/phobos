@@ -124,13 +124,19 @@ private:
         version (InlineAsm_X86_Any)
         {
             ushort sw;
-            asm pure nothrow @nogc { fstsw sw; }
+            version (LDC)
+                asm pure nothrow @nogc { "fstsw %0" : "=m" (sw); }
+            else
+                asm pure nothrow @nogc { fstsw sw; }
 
             // OR the result with the SSE2 status register (MXCSR).
             if (haveSSE)
             {
                 uint mxcsr;
-                asm pure nothrow @nogc { stmxcsr mxcsr; }
+                version (LDC)
+                    asm pure nothrow @nogc { "stmxcsr %0" : "=m" (mxcsr); }
+                else
+                    asm pure nothrow @nogc { stmxcsr mxcsr; }
                 return (sw | mxcsr) & EXCEPTIONS_MASK;
             }
             else return sw & EXCEPTIONS_MASK;
@@ -144,9 +150,29 @@ private:
             */
            assert(0, "Not yet supported");
         }
+        else version (PPC_Any)
+        {
+            return FloatingPointControl.getControlState();
+        }
+        else version (MIPS_Any)
+        {
+            return FloatingPointControl.getControlState();
+        }
+        else version (AArch64)
+        {
+            version (LDC)
+            {
+                uint fpsr;
+                asm pure nothrow @nogc { "mrs %0, FPSR" : "=r" (fpsr); }
+                return fpsr & 0x1F;
+            }
+            else
+               assert(0, "Not yet supported");
+        }
         else version (ARM)
         {
-            assert(false, "Not yet supported.");
+            const fpscr = FloatingPointControl.getControlState();
+            return fpscr & 0x1F;
         }
         else version (RISCV_Any)
         {
@@ -167,18 +193,24 @@ private:
     {
         version (InlineAsm_X86_Any)
         {
-            asm nothrow @nogc
-            {
-                fnclex;
-            }
+            version (LDC)
+                asm nothrow @nogc { "fnclex" : : : "fpsw"; }
+            else
+                asm nothrow @nogc { fnclex; }
 
             // Also clear exception flags in MXCSR, SSE's control register.
             if (haveSSE)
             {
                 uint mxcsr;
-                asm nothrow @nogc { stmxcsr mxcsr; }
+                version (LDC)
+                    asm nothrow @nogc { "stmxcsr %0" : "=m" (mxcsr); }
+                else
+                    asm nothrow @nogc { stmxcsr mxcsr; }
                 mxcsr &= ~EXCEPTIONS_MASK;
-                asm nothrow @nogc { ldmxcsr mxcsr; }
+                version (LDC)
+                    asm nothrow @nogc { "ldmxcsr %0" : : "m" (mxcsr) : "flags"; }
+                else
+                    asm nothrow @nogc { ldmxcsr mxcsr; }
             }
         }
         else version (RISCV_Any)
